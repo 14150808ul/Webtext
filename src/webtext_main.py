@@ -5,7 +5,7 @@ from pathlib import Path
 import networks
 
 #create network object using factory
-network = networks.network_factory('eir')
+network = networks.network_factory('three')
 
 #open ini file containing login details
 path = str(Path.home()) + '/.webtext.ini'
