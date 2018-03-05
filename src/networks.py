@@ -35,9 +35,16 @@ class Eir:
                 }
         )
 
-        self.logged_in = True
+        json_data = json.loads(response.text)
+        if json_data['statusCode'] == 0:
+            self.logged_in = True
+            self.mobile_num = self.get_mobile_num()
+            return 'login successful'
+        
+        else:
+            return json_data['status']
 
-        self.mobile_num = self.get_mobile_num()
+        
 
     def get_mobile_num(self):
         response = self.session.get('https://my.eir.ie/rest/secure/brand/3/portalUser/lines')
@@ -92,8 +99,15 @@ class Three:
             'section':'section'
             }
         )
-
-        self.logged_in = True
+        
+        soup = BeautifulSoup(response.text, 'html.parser')
+        login_error =  soup.find('div', class_='loginError')
+        
+        if login_error is None:
+            self.logged_in = True
+            return 'login successful'
+        else:
+            return login_error.contents[0].text
 
     def send_webtext(self, message_text, recipient_number):
 

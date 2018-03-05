@@ -44,7 +44,10 @@ message_text = input("Enter message text: ")
 
 
 print("logging in to "+ network.network_homepage + "...")
-network.login(username, password)
+login_message = network.login(username, password)
+print(login_message)
+if not network.logged_in:
+    sys.exit()
 
 print("sending webtext...")
 network.send_webtext(message_text, recipient_number)
