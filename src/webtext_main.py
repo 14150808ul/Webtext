@@ -49,7 +49,14 @@ print(login_message)
 if not network.logged_in:
     sys.exit()
 
-print("sending webtext...")
-network.send_webtext(message_text, recipient_number)
+message_array = []
 
-print ("webtext sent\nremaining texts: " + network.remaining_texts)
+while message_text:
+    message_array.append(message_text[:network.char_limit])
+    message_text = message_text[network.char_limit:]
+
+for message_num, message in enumerate(message_array, start=1):
+    print('sending webtext (' + str(message_num) + ' of ' + str(len(message_array)) + ')...')
+    network.send_webtext(message, recipient_number)
+
+print ("webtext sent\nRemaining texts: " + network.remaining_texts)

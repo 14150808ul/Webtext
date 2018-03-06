@@ -8,6 +8,7 @@ class Eir:
     
     network_name = 'eir'
     network_homepage = 'eir.ie'
+    char_limit = 480
 
     def __init__(self):
         self.session = requests.Session()
@@ -85,6 +86,7 @@ class Three:
     
     network_name = 'three'
     network_homepage = 'three.ie'
+    char_limit = 765
 
     def __init__(self):
         self.session = requests.Session()
@@ -121,7 +123,6 @@ class Three:
                                'scheduled_datetime':'',
                                'scheduled':''
                          },
-                        headers={'Connection':'close'}
         )
 
         self.remaining_texts = self.get_remaining_webtexts(response.text)
