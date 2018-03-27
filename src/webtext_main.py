@@ -1,11 +1,20 @@
 #!/usr/bin/python3
 
-import sys, configparser
+import sys, configparser, readline
 from pathlib import Path
 import networks
 
+def listCompleter(text, state):
+    
+    line = readline.get_line_buffer()
+    if not line: #no input yet - display all possibilities
+        return [name + " " for c in names][state]
+
+    else:
+        return [name + " " for name in names if name.startswith(line)][state]
+
 #create network object using factory
-network = networks.network_factory('three')
+network = networks.network_factory('eir')
 
 #open ini file containing login details
 path = str(Path.home()) + '/.webtext.ini'
@@ -28,7 +37,18 @@ if(network.network_name not in config):
 username = config[network.network_name]['username']
 password = config[network.network_name]['password']
 
-recipient_number = input("Enter name or number: ")
+
+names = []
+
+for item in list(config.items('contacts')):
+    names.append(item[0])
+
+readline.set_completer_delims('\t')
+readline.parse_and_bind("tab: complete")
+
+readline.set_completer(listCompleter)
+
+recipient_number = input("Enter name or number:  ").strip()
 
 #check if recipient starts with a digit
 if not recipient_number[0].isdigit():
